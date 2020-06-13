@@ -1,0 +1,116 @@
+{% extends 'base.html'%}
+{% load static %}
+{% load ecommerce_tags%}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/categories.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/categories_responsive.css' %}">
+{% endblock %}
+
+{% block content %}
+	<!-- Home -->
+
+	<div class="home">
+		<div class="home_container">
+			<div class="home_background" style="background-image:url({{category.imageURL}})"></div>
+			<div class="home_content_container">
+				<div class="container">
+					<div class="row">
+						<div class="col">
+							<div class="home_content">
+								<div class="home_title">{{ category.name }}<span>.</span></div>
+								<div class="home_text"><p>{{ category.description }}</p></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Products -->
+
+	<div class="products">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					
+					<!-- Product Sorting -->
+					<div class="sorting_bar d-flex flex-md-row flex-column align-items-md-center justify-content-md-start">
+						<div class="results">
+							Showing <span>{{ products.count }}</span> results
+						</div>
+						<div class="sorting_container ml-md-auto">
+							<div class="sorting">
+								<ul class="item_sorting">
+									<li>
+										<span class="sorting_text">Sort by</span>
+										<i class="fa fa-chevron-down" aria-hidden="true"></i>
+										<ul>
+											<li class="product_sorting_btn" data-category="{{category.pk}}"
+											data-sorting="default" data-isotope-option= "default" ><span>Default (Newest)</span></li>
+											<li class="product_sorting_btn" data-category="{{category.pk}}" data-sorting="price" data-isotope-option="price"><span>Price (Low to high)</span></li>
+											<li class="product_sorting_btn" data-category="{{category.pk}}" data-sorting="-price" data-isotope-option="-price"><span>Price (high to low)</span></li>
+											<li class="product_sorting_btn" data-category="{{category.pk}}"  data-sorting="name" data-isotope-option="name"><span>Name (A-Z)</span></li>
+										</ul>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<!-- <input type="submit" class="product_sorting_btn" data-sorting="default" data-category="{{category.pk}}" value="default">
+						<input type="submit" class="product_sorting_btn" data-sorting="name" data-category="{{category.pk}}" value="name">
+						<input type="submit" class="product_sorting_btn" data-sorting="price" data-category="{{category.pk}}" value="price"> -->
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					
+					<div class="product_grid">
+
+						<!-- Product -->
+						{% for product in products %}
+						<div class="product">
+							<div class="product_image" onclick="location.href='{%url 'product' product.slug %}';" style="cursor: pointer;"><img src="{{ product.imageURL}}" alt=""></div>
+							{% if product.status == 'New'%}
+							<div class="product_extra product_new">
+								<a href="">New</a>
+							</div>
+							{% elif product.status == 'Hot'%}
+							<div class="product_extra product_hot">
+								<a href="">Hot</a>
+							</div>
+							{% elif product.status == 'Sale'%}
+							<div class="product_extra product_sale">
+								<a href="">Sale</a>
+							</div>
+							{% endif %}
+
+							<div class="product_content">
+								<div class="product_title"><a href="{% url 'product' product.slug%}">{{ product.name }}</a></div>
+								<div class="product_price">{{ product.price|vnd }}</div>
+							</div>
+							<div class="button cart_button "><a  class="update-cart" data-product="{{ product.id }}" data-action="add">Add to cart</a></div>
+						</div>
+						{% endfor %}
+					</div>
+					<!-- <div class="product_pagination">
+						<ul>
+							<li class="active"><a href="#">01.</a></li>
+							<li><a href="#">02.</a></li>
+							<li><a href="#">03.</a></li>
+						</ul>
+					</div> -->
+						
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'js/categories.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html'%}
+{% load static %}
+{% load ecommerce_tags%}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/main_styles.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/responsive.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/customer.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="customer-content">
+    <div class="row">
+      <div class="update-profile">
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token%}
+            <p>
+              <label for="{{form.first_name.id_for_label}}">First name:</label>
+              {{form.first_name}}
+            </p>
+            <p>
+              <label for="{{form.last_name.id_for_label}}">Last name:</label>
+              {{form.last_name}}
+            
+            </p>
+            <p>
+              <label for="{{form.email.id_for_label}}">Email:</label>
+              {{form.email}}
+            </p>
+            <p>
+              <label for="{{form.profile_pic.id_for_label}}">Profile picture:</label>
+              {{form.profile_pic}}
+            </p>
+              <input type="submit" class="btn btn-info btn-update-profile">
+        </form>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'js/custom.js' %}"></script>
+{% endblock %}

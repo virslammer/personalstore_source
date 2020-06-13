@@ -1,0 +1,39 @@
+.customer-content {
+    margin-top:150px;
+    padding-left:100px;
+    padding-right:100px;
+  
+}
+
+
+.profile-pic {
+    width:100px;
+    border-radius:50%;
+    margin:auto;
+} 
+
+.update-profile {
+    margin:auto;
+    width:50%
+}
+
+.btn-update-profile {
+    margin-top:10px;
+
+}
+
+.messages{
+    background-color: #E95A5A;
+    color: #fff;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.customer-order {
+    height:450px;
+    overflow: scroll;
+}
+
+.hide {
+    display:none
+}

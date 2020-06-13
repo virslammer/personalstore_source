@@ -1,0 +1,189 @@
+{% extends 'base.html'%}
+{% load static %}
+{% load ecommerce_tags%}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'styles/main_styles.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/responsive.css' %}">
+{% endblock %}
+
+{% block content%}
+
+	
+	
+	<!-- Home -->
+
+	<div class="home">
+		<div class="home_slider_container">
+			
+			<!-- Home Slider -->
+			<div class="owl-carousel owl-theme home_slider">
+			{% for item in slider %}
+				<!-- Slider Item -->
+				<div class="owl-item home_slider_item">
+					<div class="home_slider_background" style="background-image:url({{item.imageURL}})"></div>
+					<div class="home_slider_content_container">
+						<div class="container">
+							<div class="row">
+								<div class="col">
+									<div class="home_slider_content"  data-animation-in="fadeIn" data-animation-out="animate-out fadeOut">
+										<div class="home_slider_title">{{item.title}}</div>
+										<div class="home_slider_subtitle">{{ item.content }}</div>
+										<div class="button button_light home_button"><a href="{{item.link_to}}">Shop Now</a></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+		
+
+
+
+			</div>
+
+			<!-- Home Slider Dots -->
+			
+			<div class="home_slider_dots_container">
+				<div class="container">
+					<div class="row">
+						<div class="col">
+							<div class="home_slider_dots">
+								<ul id="home_slider_custom_dots" class="home_slider_custom_dots">
+									<li class="home_slider_custom_dot active">01.</li>
+									<li class="home_slider_custom_dot">02.</li>
+									<li class="home_slider_custom_dot">03.</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>	
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Ads -->
+
+	<div class="avds">
+		<div class="avds_container d-flex flex-lg-row flex-column align-items-start justify-content-between">
+			<div class="avds_small">
+				<div class="avds_background" style="background-image:url({{ads.home_top_left.imageURL}})"></div>
+				<div class="avds_small_inner">
+					<div class="avds_small_content">
+						<div class="avds_title">{{ads.home_top_left.title}}</div>
+						<div class="avds_link"><a href="{{ads.home_top_left.link_to}}">See More</a></div>
+					</div>
+				</div>
+			</div>
+			<div class="avds_large">
+				<div class="avds_background" style="background-image:url({{ads.home_top_right.imageURL}})"></div>
+				<div class="avds_large_container">
+					<div class="avds_large_content">
+						<div class="avds_title">{{ads.home_top_right.title}}</div>
+						<div class="avds_text">{{ads.home_top_right.content}}</div>
+						<div class="avds_link avds_link_large"><a href="{{ads.home_top_right.link_to}}">See More</a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Products -->
+
+	<div class="products">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					
+					<div class="product_grid">
+					{% for product in products %}
+						
+						<!-- Product New-->
+						<div class="product">
+							<div class="product_image"><img src="{{ product.imageURL }}" alt="" onclick="location.href='{%url 'product' product.slug %}';" style="cursor: pointer;"></div>
+							{% if product.status == 'New' %}
+							<div class="product_extra product_new">
+								<a href="{%url 'product' product.slug %}">New</a>
+							</div>
+							{% elif product.status == 'Sale'%}
+							<div class="product_extra product_sale">
+								<a href="{%url 'product' product.slug %}">Sale</a>
+							</div>
+							{% elif product.status == 'Hot' %}
+							<div class="product_extra product_hot">
+								<a href="{%url 'product' product.slug %}">Hot</a>
+							</div>
+							{% endif %}
+
+							<div class="product_content">
+								<div class="product_title"><a href="{%url 'product' product.slug %}">{{ product.name }}</a></div>
+								<div class="product_price">{{ product.price|vnd }}</div>
+							</div>
+							<div class="button cart_button "><a class="update-cart" data-product="{{ product.id }}" data-action="add">Add to cart</a></div>
+						</div>
+
+						
+						
+						
+					{% endfor %}
+						
+					
+					</div>
+					<div class="pagination-container">
+
+					
+						<div class="pagination">
+						{% if products.has_previous %}
+						<a href="?page={{ products.previous_page_number }}">&laquo; </a>
+						{% endif %}
+
+						
+						{% for page in products.paginator.page_range%}
+						<a href="?page={{ page }}"  {%if products.number == page %} class="active" {%endif%}>{{page}}</a>
+						{% endfor %}
+						<!-- Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}. -->
+	
+
+						{% if products.has_next %}
+					
+						<a href="?page={{ products.paginator.num_pages }}"> &raquo;</a>
+						{% endif %}
+						</div>
+
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Ad -->
+
+	<div class="avds_xl">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="avds_xl_container clearfix">
+						<div class="avds_xl_background" style="background-image:url({{ads.home_bottom.imageURL}})"></div>
+						<div class="avds_xl_content">
+							<div class="avds_title">{{ads.home_bottom.title}}</div>
+							<div class="avds_text">{{ads.home_bottom.content}}</div>
+							<div class="avds_link avds_xl_link"><a href="{{ads.home_bottom.link_to}}">See More</a></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/custom.js' %}"></script>
+{% endblock %}
+

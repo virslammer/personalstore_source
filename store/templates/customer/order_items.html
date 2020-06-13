@@ -1,0 +1,8 @@
+{% load ecommerce_tags%}
+
+    {% for item in items %}
+        <p>{{ item.product.name }} x {{ item.quantity }} ---- {{ item.get_total|vnd }}</p>
+    {% endfor %}
+
+
+    

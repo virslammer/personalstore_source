@@ -1,0 +1,83 @@
+{% extends 'base.html'%}
+{% load static %}
+{% load ecommerce_tags%}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/main_styles.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/responsive.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/customer.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="customer-content">
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="row">
+        <div class="col-sm-6 customer-profile">
+            <div class="card customer-profile-content" >
+                <img class="card-img-top profile-pic" src="{{customer.ProfilePicURL}}" alt="Card image cap">
+                <div class="card-body">
+                <h5 class="card-title">Hello {{ customer.username }}</h5>
+                <p class="card-text">Your order will be show on this page </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                <li class="list-group-item">First name : {{ customer.first_name }}</li>
+                <li class="list-group-item">Last name : {{ customer.last_name }}</li>
+                <li class="list-group-item">Email : {{customer.email}}</li>
+                </ul>
+                <div class="card-body">
+                <a href="{% url 'update-profile' %}" class="card-link">Update your profile</a>
+                <a href="{% url 'change-password' %}" class="card-link">Change password</a>
+                
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 customer-order">
+            <div class="card text-center">
+                <div class="card-header">
+                  <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item">
+                      <a data-complete="false" class="nav-link  active" href="#">On delivery</a>
+                    </li>
+                    <li class="nav-item">
+                      <a data-complete="true" class="nav-link " href="#">Completed</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="card-body">
+                    {% for order in orders %}
+                    <div class="card  mb-3 {{ order.complete}} {% if order.complete == True%} border-danger hide {%else%} border-info {%endif%}" >
+                        <div class="card-header">
+                            <p>Order No: {{ order.transaction_id }}</p>
+                            <p>Date: {{ order.date_ordered }}</p>
+                        </div>
+                        <div class="card-body {% if order.complete == True%} text-info-danger  {%else%} text-info {%endif%}">
+                          <h5 class="card-title">
+                              Order Details: </h5>
+                          <p class="card-text">{% show_order_items order %}</p>
+                          <h5>Total: {{order.get_cart_total|vnd}}</h5>
+                          <h5>Payment type: {{order.payment_type}}</h5>
+                          <h5 class="card-title">Delivery Details: </h5>
+                          <p class="card-text">{% show_shipping_address order %}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+              </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'js/custom.js' %}"></script>
+<script src="{% static 'js/customer.js' %}"></script>
+{% endblock %}
