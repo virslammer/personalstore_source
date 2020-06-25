@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '*7#600#j%hb@yp1^b_ws$)v+g#1kki!nu)3#-ip22o#mlvm_um'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1:8000','virslammer.pythonanywhere.com']
+ALLOWED_HOSTS = ['localhost','127.0.0.1:8000','virslammer.pythonanywhere.com']
 
 
 # Application definition
@@ -38,15 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'storages',
+    'rest_framework',
     # own app 
     'store',
+    'store_api'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -152,3 +151,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'virslammer@gmail.com'
 EMAIL_HOST_PASSWORD = 'Minhanh@95'
 
+# Paginator in rest API
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}

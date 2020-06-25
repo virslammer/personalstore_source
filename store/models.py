@@ -45,7 +45,7 @@ class Product(models.Model):
         ('Hot','Hot'),
         ('Sale','Sale'),
     )
-    category = models.ForeignKey(Category,null=True, blank=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey(Category,related_name='products',null=True, blank=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=200, unique=True)
     summary = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
@@ -55,6 +55,8 @@ class Product(models.Model):
     status = models.CharField(max_length=50,null=True, blank=True, choices=STATUS, default='Normal')
     created_date = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(default='',editable=False)
+    class Meta:
+        ordering= ['-created_date']
     def save(self, *args, **kwargs): 
         self.slug = slugify(unidecode(self.name)) # Xoa dau tieng viet
         return super().save(*args, **kwargs)
@@ -70,7 +72,7 @@ class Product(models.Model):
         return url
 
 class Order(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+    customer = models.ForeignKey(Customer, related_name='order_list' ,on_delete=models.SET_NULL, null=True, blank=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=100, null=True)
@@ -90,12 +92,13 @@ class Order(models.Model):
         return total
 
 class OrderItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
+    product = models.ForeignKey(Product,related_name='product_name', on_delete=models.SET_NULL, blank=True, null=True)
+    order = models.ForeignKey(Order,related_name='items', on_delete=models.SET_NULL, blank=True, null=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return str(self.product)
+        return {
+            str(self.product)}
     @property
     def get_product_quantity(self):
         return {'product':self.product,'quantity':self.quantity}
@@ -106,8 +109,8 @@ class OrderItem(models.Model):
         return total
 
 class ShippingAddress(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
-    order = models.OneToOneField(Order, on_delete=models.SET_NULL, null=True, blank=True)
+    customer = models.ForeignKey(Customer,related_name='shipping_address', on_delete=models.SET_NULL, null=True, blank=True)
+    order = models.OneToOneField(Order,related_name='shipping_address', on_delete=models.SET_NULL, null=True, blank=True)
     first_name = models.CharField(max_length=200,null=True)
     last_name = models.CharField(max_length=200,null=True)
     email = models.EmailField(null=True)

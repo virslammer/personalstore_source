@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('',Store,name='store'),
     # ---- Product display Section -----
-    path('<str:slug>',ProductDetail,name='product'),
+    path('product/<str:slug>',ProductDetail,name='product'),
     path('category/<str:pk>',ProductByCategory, name='category'),
     path('search-item/',SearchProduct,name='search'),
     path('sort-product/',SortProduct,name='sort-product'),
